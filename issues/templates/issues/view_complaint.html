@@ -1,0 +1,104 @@
+{% extends 'issues/base.html' %}
+{% block content %}
+<!-- added: back button -->
+<a href="javascript:history.back()" class="btn btn-sm btn-outline-secondary mb-3">← Back</a>
+
+<div class="row">
+<div class="col-lg-8">
+<div class="card shadow-sm">
+<div class="card-body">
+<div class="d-flex justify-content-between">
+<div>
+<h4 class="mb-1">{{ comp.title }}</h4>
+<div class="small text-muted">Reported by {{ comp.reporter.username }} · {{ comp.created_at|date:'M d, Y H:i' }}</div>
+</div>
+
+
+<div class="text-end">
+<div>
+{% if comp.priority == 'high' %}
+<span class="badge bg-danger me-1">{{ comp.get_priority_display }}</span>
+{% elif comp.priority == 'medium' %}
+<span class="badge bg-warning text-dark me-1">{{ comp.get_priority_display }}</span>
+{% else %}
+<span class="badge bg-secondary me-1">{{ comp.get_priority_display }}</span>
+{% endif %}
+
+{% if comp.status == 'open' %}
+<span class="badge bg-primary">{{ comp.get_status_display }}</span>
+{% elif comp.status == 'in_progress' %}
+<span class="badge bg-info text-dark">{{ comp.get_status_display }}</span>
+{% elif comp.status == 'resolved' %}
+<span class="badge bg-success">{{ comp.get_status_display }}</span>
+{% else %}
+<span class="badge bg-dark">{{ comp.get_status_display }}</span>
+{% endif %}
+</div>
+</div>
+</div>
+
+
+<hr>
+<h6 class="small text-muted">Description</h6>
+<p class="mb-3">{{ comp.description|linebreaks }}</p>
+
+
+{% if comp.attachment %}
+<p><strong>Attachment:</strong> <a href="{{ comp.attachment.url }}" target="_blank">Download file</a></p>
+{% endif %}
+
+
+{% if comp.admin_comment %}
+<div class="border rounded p-3 bg-light mt-3">
+<h6 class="mb-1">Admin comment</h6>
+<p class="mb-0 small">{{ comp.admin_comment|linebreaks }}</p>
+</div>
+{% endif %}
+
+
+</div>
+</div>
+
+
+<div class="mt-3">
+<h6>Activity timeline</h6>
+<ul class="timeline list-unstyled p-0">
+<li class="mb-3">
+<div class="small text-muted">{{ comp.created_at|date:'M d, Y H:i' }}</div>
+<div class="fw-semibold">Reported</div>
+<div class="small text-muted">Your complaint was submitted.</div>
+</li>
+{% if comp.updated_at and comp.updated_at != comp.created_at %}
+<li class="mb-3">
+<div class="small text-muted">{{ comp.updated_at|date:'M d, Y H:i' }}</div>
+<div class="fw-semibold">Updated</div>
+<div class="small text-muted">Status or priority was updated.</div>
+</li>
+{% endif %}
+</ul>
+</div>
+
+
+</div>
+
+
+<div class="col-lg-4">
+<div class="card shadow-sm mb-3">
+<div class="card-body">
+<h6>Quick info</h6>
+<dl class="row small">
+<dt class="col-5">Reporter</dt><dd class="col-7">{{ comp.reporter.username }}</dd>
+<dt class="col-5">Category</dt><dd class="col-7">{{ comp.category }}</dd>
+<dt class="col-5">Priority</dt><dd class="col-7">{{ comp.get_priority_display }}</dd>
+<dt class="col-5">Status</dt><dd class="col-7">{{ comp.get_status_display }}</dd>
+</dl>
+
+
+{% if user.is_staff %}
+<a class="btn btn-sm btn-outline-primary w-100" href="{% url 'issues:admin_update_complaint' comp.pk %}">Update complaint</a>
+{% endif %}
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

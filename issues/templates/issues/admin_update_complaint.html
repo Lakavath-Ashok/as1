@@ -1,0 +1,47 @@
+{% extends 'issues/base.html' %}
+{% block title %}Update complaint — Admin{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+<div class="col-lg-8">
+<div class="card shadow-sm">
+<div class="card-body p-4">
+<h4 class="mb-3">Update complaint #{{ comp.id }}</h4>
+<form method="post">
+{% csrf_token %}
+<div class="row g-3">
+<div class="col-md-6">
+<label class="form-label">Status</label>
+<select name="status" class="form-select">
+<option value="open" {% if comp.status=='open' %}selected{% endif %}>Open</option>
+<option value="in_progress" {% if comp.status=='in_progress' %}selected{% endif %}>In Progress</option>
+<option value="resolved" {% if comp.status=='resolved' %}selected{% endif %}>Resolved</option>
+<option value="closed" {% if comp.status=='closed' %}selected{% endif %}>Closed</option>
+</select>
+</div>
+<div class="col-md-6">
+<label class="form-label">Priority</label>
+<select name="priority" class="form-select">
+<option value="low" {% if comp.priority=='low' %}selected{% endif %}>Low</option>
+<option value="medium" {% if comp.priority=='medium' %}selected{% endif %}>Medium</option>
+<option value="high" {% if comp.priority=='high' %}selected{% endif %}>High</option>
+</select>
+</div>
+</div>
+
+
+<div class="mb-3 mt-3">
+<label class="form-label">Admin comment</label>
+<textarea name="admin_comment" class="form-control" rows="4">{{ comp.admin_comment }}</textarea>
+</div>
+
+
+<div class="d-flex justify-content-between">
+<a class="btn btn-link" href="{% url 'issues:admin_complaints' %}">Back</a>
+<button class="btn btn-primary" type="submit">Save changes</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,141 @@
+{% extends 'issues/base.html' %}
+{% block title %}Register — CampusConnect{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h3 class="mb-2">Create your CampusConnect account</h3>
+        <p class="text-muted small mb-4">
+          Use a valid email so admins can verify your identity. We'll never share your email.
+        </p>
+
+        <form method="post" novalidate data-validate="true" id="register-form">
+          {% csrf_token %}
+          {{ form.non_field_errors }}
+
+          <!-- Username -->
+          <div class="mb-3">
+            <label for="id_username" class="form-label">Username</label>
+            {{ form.username.as_widget(attrs={
+                'class':'form-control',
+                'placeholder':'Choose a username',
+                'id':'id_username',
+                'autocomplete':'username'
+              }) }}
+            {% if form.username.errors %}
+              <div class="fv-error text-danger small mt-1">
+                {{ form.username.errors.as_text|striptags }}
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- Email -->
+          <div class="mb-3">
+            <label for="id_email" class="form-label">Email</label>
+            {{ form.email.as_widget(attrs={
+                'class':'form-control',
+                'placeholder':'your@college.edu',
+                'id':'id_email',
+                'autocomplete':'email',
+                'inputmode':'email'
+              }) }}
+            {% if form.email.errors %}
+              <div class="fv-error text-danger small mt-1">
+                {{ form.email.errors.as_text|striptags }}
+              </div>
+            {% endif %}
+            <div class="form-text">We recommend using your college email for faster verification.</div>
+          </div>
+
+          <!-- Password -->
+          <div class="mb-3">
+            <label for="id_password1" class="form-label">Password</label>
+            {{ form.password1.as_widget(attrs={
+                'class':'form-control',
+                'placeholder':'Create a strong password',
+                'id':'id_password1',
+                'autocomplete':'new-password'
+              }) }}
+            {% if form.password1.errors %}
+              <div class="fv-error text-danger small mt-1">
+                {{ form.password1.errors.as_text|striptags }}
+              </div>
+            {% endif %}
+            <div class="form-text">Use at least 8 characters. Mix letters and numbers for better security.</div>
+          </div>
+
+          <!-- Confirm password -->
+          <div class="mb-3">
+            <label for="id_password2" class="form-label">Confirm password</label>
+            {{ form.password2.as_widget(attrs={
+                'class':'form-control',
+                'placeholder':'Repeat your password',
+                'id':'id_password2',
+                'autocomplete':'new-password'
+              }) }}
+            {% if form.password2.errors %}
+              <div class="fv-error text-danger small mt-1">
+                {{ form.password2.errors.as_text|striptags }}
+              </div>
+            {% endif %}
+            <div id="pw-match-msg" class="small mt-1"></div>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mt-4">
+            <a class="small text-muted" href="{% url 'issues:login' %}">&larr; Already have an account?</a>
+            <button type="submit" class="btn btn-primary">Create account</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="text-center small text-muted mt-3">
+      By creating an account you agree to our <a href="#" class="link-primary">terms</a>.
+    </div>
+  </div>
+</div>
+
+<!-- Inline helper JS: password match feedback (works with form_validation.js) -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const p1 = document.getElementById('id_password1');
+  const p2 = document.getElementById('id_password2');
+  const msg = document.getElementById('pw-match-msg');
+
+  function checkMatch() {
+    if (!p1 || !p2) return;
+    if (!p1.value && !p2.value) {
+      msg.textContent = '';
+      return;
+    }
+    if (p2.value.length === 0) {
+      msg.textContent = '';
+      return;
+    }
+    if (p1.value === p2.value) {
+      msg.textContent = 'Passwords match';
+      msg.className = 'text-success small';
+    } else {
+      msg.textContent = 'Passwords do not match';
+      msg.className = 'text-danger small';
+    }
+  }
+
+  p1 && p1.addEventListener('input', checkMatch);
+  p2 && p2.addEventListener('input', checkMatch);
+
+  // optional: prevent submission if passwords mismatch (extra guard)
+  const form = document.getElementById('register-form');
+  form && form.addEventListener('submit', function (e) {
+    if (p1 && p2 && p1.value !== p2.value) {
+      e.preventDefault();
+      p2.focus();
+      msg.textContent = 'Passwords do not match';
+      msg.className = 'text-danger small';
+    }
+  });
+});
+</script>
+{% endblock %}

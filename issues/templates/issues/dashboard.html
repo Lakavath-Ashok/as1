@@ -1,0 +1,96 @@
+{% extends 'issues/base.html' %}
+{% block title %}Dashboard — CampusConnect{% endblock %}
+{% block content %}
+<!-- added: back button -->
+<a href="javascript:history.back()" class="btn btn-sm btn-outline-secondary mb-3">← Back</a>
+
+<div class="row g-4">
+	<div class="col-lg-8">
+		<div class="row g-4">
+			<div class="col-md-4">
+				<div class="card p-3 shadow-sm">
+					<div class="d-flex align-items-center">
+						<div class="me-3 display-6 text-primary">{{ open_count }}</div>
+						<div>
+							<div class="small text-muted">Open</div>
+							<div class="fw-semibold">Issues</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-4">
+				<div class="card p-3 shadow-sm">
+					<div class="d-flex align-items-center">
+						<div class="me-3 display-6 text-warning">{{ high_pending }}</div>
+						<div>
+							<div class="small text-muted">High-priority</div>
+							<div class="fw-semibold">Pending</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-4">
+				<div class="card p-3 shadow-sm">
+					<div class="d-flex align-items-center">
+						<div class="me-3 display-6 text-success">{{ unread }}</div>
+						<div>
+							<div class="small text-muted">Unread</div>
+							<div class="fw-semibold">Notifications</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="mt-4">
+			<h5>Recent reports</h5>
+			<div class="list-group">
+				{% for c in recent %}
+					<a href="{% url 'issues:view_complaint' c.pk %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto">
+							<div class="fw-semibold">{{ c.title }}</div>
+							<div class="small text-muted">{{ c.created_at|date:'M d, Y H:i' }} · {{ c.category }}</div>
+						</div>
+						<div class="text-end">
+							<span class="badge rounded-pill {% if c.priority == 'high' %}bg-danger{% elif c.priority == 'medium' %}bg-warning text-dark{% else %}bg-secondary{% endif %}">{{ c.get_priority_display }}</span>
+							<div class="small mt-1 text-muted">{{ c.get_status_display }}</div>
+						</div>
+					</a>
+				{% empty %}
+					<div class="card p-3 text-muted">You haven't reported anything yet — go ahead and submit your first issue.</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-4">
+		<div class="card shadow-sm mb-3">
+			<div class="card-body">
+				<h6>Quick actions</h6>
+				<a class="btn btn-primary w-100 mb-2" href="{% url 'issues:create_complaint' %}">Report a new issue</a>
+				<a class="btn btn-outline-secondary w-100" href="{% url 'issues:my_complaints' %}">View my reports</a>
+			</div>
+		</div>
+
+		<div class="card shadow-sm">
+			<div class="card-body">
+				<h6>Need help?</h6>
+				<dl class="row small mb-2">
+					<dt class="col-4">Phone</dt><dd class="col-8"><a href="tel:+15551234567">+1 (555) 123-4567</a></dd>
+					<dt class="col-4">Email</dt><dd class="col-8"><a href="mailto:support@campusconnect.edu">support@campusconnect.edu</a></dd>
+					<dt class="col-4">Office</dt><dd class="col-8">Student Services, Building A, Room 101</dd>
+					<dt class="col-4">Hours</dt><dd class="col-8">Mon–Fri 09:00–17:00</dd>
+				</dl>
+				<p class="small text-muted mb-2">For urgent safety issues contact Campus Security immediately: <a href="tel:+15559876543">+1 (555) 987-6543</a>.</p>
+				<div class="d-flex">
+					<!-- changed: open user's mail client to create a support request -->
+					<a class="btn btn-sm btn-primary me-2" href="mailto:support@campusconnect.edu?subject=CampusConnect%20Support%20Request" role="button">Open support ticket</a>
+					<a class="btn btn-sm btn-outline-secondary" href="mailto:support@campusconnect.edu" role="button">Email support</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

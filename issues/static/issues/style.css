@@ -1,0 +1,85 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  background: #f4f4f4;
+}
+
+.site-header {
+  background: #1f2937;
+  color: white;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.site-header a {
+  color: white;
+  margin-right: 15px;
+  text-decoration: none;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+main {
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+  background: white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+form input, form select, form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  background: #2563eb;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1e40af;
+}
+
+.messages {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.messages li {
+  padding: 10px;
+  background: #e0f2fe;
+  border-left: 4px solid #2563eb;
+  margin-bottom: 10px;
+}
+
+.badge {
+  display: inline-block;
+  background: #e0e7ff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  margin-right: 10px;
+}
+
+.complaint-list {
+  list-style: none;
+  padding: 0;
+}
+
+.complaint-list li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}

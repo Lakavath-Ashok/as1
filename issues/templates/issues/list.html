@@ -1,0 +1,11 @@
+{% extends 'issues/base.html' %}
+{% block content %}
+  <h2>All Complaints</h2>
+  <ul>
+    {% for c in complaints %}
+      <li>{{ c.title }} — {{ c.get_status_display }}</li>
+    {% empty %}
+      <li>No complaints yet.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

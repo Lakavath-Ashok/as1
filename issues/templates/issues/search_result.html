@@ -1,0 +1,18 @@
+{% extends 'issues/base.html' %}
+{% block title %}Search — CampusConnect{% endblock %}
+{% block content %}
+<h4>Search results for "{{ q }}"</h4>
+<div class="list-group mt-3">
+{% for r in results %}
+<a href="{% url 'issues:view_complaint' r.pk %}" class="list-group-item list-group-item-action">
+<div class="d-flex w-100 justify-content-between">
+<h6 class="mb-1">{{ r.title }}</h6>
+<small class="text-muted">{{ r.created_at|date:'M d' }}</small>
+</div>
+<p class="mb-1 small text-muted">{{ r.description|truncatechars:120 }}</p>
+</a>
+{% empty %}
+<div class="card p-3 text-muted">No results found.</div>
+{% endfor %}
+</div>
+{% endblock %}
